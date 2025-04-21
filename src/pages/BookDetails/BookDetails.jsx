@@ -1,11 +1,18 @@
 import React from 'react';
 import { useLoaderData, useParams } from 'react-router';
+import { addToStoredDB } from '../../Utility/AddToDB';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { ToastContainer, toast } from 'react-toastify';
+
+const MySwal = withReactContent(Swal);
 
 const BookDetails = () => {
   const { id } = useParams();
   const bookId = parseInt(id);
   const data = useLoaderData();
   const singleBook = data.find(book => book.bookId === bookId);
+  // console.log(singleBook);
 
   const {
     bookName,
@@ -19,7 +26,23 @@ const BookDetails = () => {
     yearOfPublishing,
     rating,
   } = singleBook;
-  // console.log(singleBook);
+
+  const handleMarkAsRead = () => {
+    // MySwal.fire({
+    //   title: <p>Hello World</p>,
+    //   didOpen: () => {
+    //     // `MySwal` is a subclass of `Swal` with all the same instance & static methods
+    //     MySwal.showLoading();
+    //   },
+    // }).then(() => {
+    //   return MySwal.fire(<p>Shorthand works too</p>);
+    // });
+
+    toast('Wow so easy!');
+
+    addToStoredDB(id);
+  };
+
   return (
     <div className="w-full my-5">
       <div className="flex gap-10">
@@ -37,8 +60,10 @@ const BookDetails = () => {
           </p>
           <div className="flex gap-5 py-3">
             <span className="font-bold">Tag:</span>
-            {tags.map(tag => (
-              <p className="badge bg-[#cfe1cc51] text-[#23BE0A]">{tag}</p>
+            {tags.map((tag, index) => (
+              <p className="badge bg-[#cfe1cc51] text-[#23BE0A]" key={index}>
+                {tag}
+              </p>
             ))}
           </div>
           <p className="border-t-1 border-solid border-gray-200 py-2">
@@ -48,10 +73,13 @@ const BookDetails = () => {
           <p className="py-2">Year of Publishing:{yearOfPublishing}</p>
           <p className="pt-2 pb-10">Rating:{rating}</p>
 
-          <button className="btn mr-5">Mark as Read</button>
+          <button onClick={() => handleMarkAsRead(id)} className="btn mr-5">
+            Mark as Read
+          </button>
           <button className="btn bg-[#50B1C9]">Add to Wishlist</button>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
