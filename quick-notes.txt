@@ -1,1 +1,3 @@
-Ibrahim Rifat
+data-theme="light"
+
+  path:'/bookDetails/:id' এইখানে কোলন দারা বোঝায় যে এক একবার একেকটা নাম্বার আসবে 
